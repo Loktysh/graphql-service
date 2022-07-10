@@ -1,29 +1,36 @@
 import { gql } from 'apollo-server-express';
 
-export const User = gql`
+export const Artist = gql`
   type Query {
-    jwt(email: String!, password: String!): Jwt
-    user(userId: ID!): User
+    artist(id: ID!): Artist
+    artists(limit: Int, offset: Int): [Artist]
   }
-  type Jwt {
-    jwt: String!
-  }
-  type User {
+  type Artist {
     id: ID!
     firstName: String
-    lastName: String
-    password: String
-    email: String!
+    secondName: String
+    middleName: String
+    birthDate: String
+    birthPlace: String
+    country: String
+    bands: [Band]
+    instruments: [String]
   }
-  input UserInput {
+  
+  input ArtistInput {
     firstName: String
-    lastName: String
-    password: String
-    email: String!
-    favouriteArtistIds: [String]
+    secondName: String
+    middleName: String
+    birthDate: String
+    birthPlace: String
+    country: String
+    bands: [ID]
+    instruments: [String]
   }
+  
   type Mutation {
-    login(email: String, password: String): Jwt
-    register(input: UserInput): User
+    createArtist(input: ArtistInput): Artist
+    updateArtist(id: ID!, input: ArtistInput): Artist
+    deleteArtist(id: ID!): Delete
   }
 `;

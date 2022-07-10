@@ -1,29 +1,25 @@
 import { gql } from 'apollo-server-express';
 
-export const User = gql`
+export const Favourite = gql`
   type Query {
-    jwt(email: String!, password: String!): Jwt
-    user(userId: ID!): User
+    favourites: Favourites!
   }
-  type Jwt {
-    jwt: String!
-  }
-  type User {
+  type Favourites {
     id: ID!
-    firstName: String
-    lastName: String
-    password: String
-    email: String!
+    userId: ID
+    bands: [Band]
+    genres: [Genre]
+    artists: [Artist]
+    tracks: [Track]
   }
-  input UserInput {
-    firstName: String
-    lastName: String
-    password: String
-    email: String!
-    favouriteArtistIds: [String]
+  input InputFavourite {
+    type: String
+    id: String
   }
   type Mutation {
-    login(email: String, password: String): Jwt
-    register(input: UserInput): User
+    addTrackToFavourites(input: InputFavourite): Favourites
+    addBandToFavourites(input: InputFavourite): Favourites
+    addArtistToFavourites(input: InputFavourite): Favourites
+    addGenreToFavourites(input: InputFavourite): Favourites
   }
 `;

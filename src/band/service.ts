@@ -1,40 +1,11 @@
-import axios, { AxiosInstance,  } from "axios";
 import config from '../setup/config';
-import { getApiClient } from "../setup/api-client";
+import ApiBridge from '../setup/api-bridge';
+import { Band } from '../setup/interfaces';
 
-class UserService {
-  client: AxiosInstance;
-
+class BandService extends ApiBridge<Band> {
   constructor() {
-    this.client = getApiClient(config.USERS_URL);
-  }
-
-  async user(id: string) {
-    const { data } = await this.client
-      .get(`${id}`);
-
-    return data;
-  }
-
-  async jwt(email: string, password: string) {
-    const { data } = await this.client
-      .post(`/login`, {
-        email,
-        password
-      });
-
-    return data;
-  }
-
-  async register(body: any) {
-    const { data } = await this.client
-      .post(`/register`, body);
-
-    return {
-      ...data,
-      id: data._id
-    };
+    super(config.BANDS_URL);
   }
 }
 
-export default new UserService();
+export default new BandService();

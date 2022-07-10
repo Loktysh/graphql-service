@@ -1,23 +1,50 @@
-import userService from './service';
+import bandService from '../band/service';
+import genreService from '../genre/service';
+import { Params } from '../setup/interfaces';
+import { artistResolvers } from '../artist/resolvers';
+import artistsService from '../artist/service';
 
-
-export const userResolvers = {
+export const bandResolvers = {
   Query: {
-    user: async (_parent: any, args: any) => {
-      return userService.user(args.userId);
+    band: async (_parent: any, params: Params) => {
+      return bandService.getEntityById(params.id);
     },
-    jwt: async (_parent: any, body: any) => {
-      return userService.jwt(body.email, body.password);
+    bands: async (_parent: any, params: Params) => {
+      return bandService.getEntities(params);
     },
   },
+
   Mutation: {
-    login: async (_: any, { email, password }: any) => {
-      const res = await userService.jwt(email, password);
-      const data = { jwt: res.jwt };
-      return data;
+    createBand: async (_parent: any, { createBandInput }: any, { token }: any) => {
+      return await bandService.createEntity(createBandInput, token);
     },
-    register: async (_: any, { input }: any) => {
-      return await userService.register(input);
+    updateBand: async (_parent: any, body: any, { token }: any) => {
+      return await bandService.updateEntity(body.id, body.updateBandInput, token);
+    },
+    deleteBand: async (_parent: any, body: any, { token }: any) => {
+      return await bandService.deleteEntity(body.id, token);
+    },
+  },
+
+  Band: {
+    id: (parent: any) => parent._id,
+    genres: async ({ genresIds }: any) => {
+      return await Promise.all(genresIds.map((id: string) => genreService.getEntityById(id)));
+    },
+    members: async ({ members }: any) => {
+      const res = await Promise.all(
+        members.map(async (id: string) => {
+          const artist: any = await artistsService.getEntityById(id);
+
+          return {
+            artist: artist.firstName,
+            instrument: artist.instruments,
+            years: artist.birthDate ? [artist.birthDate] : [],
+          };
+        })
+      );
+
+      return res;
     },
   },
 };
