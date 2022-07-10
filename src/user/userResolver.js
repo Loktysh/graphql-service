@@ -1,6 +1,5 @@
 import userService from './userService';
-
-export const userResolvers = {
+const userResolvers = {
   Query: {
     user: async (parent, { id }, { dataSources }) => {
       return UsersAPI.getUser(id);
@@ -16,3 +15,4 @@ export const userResolvers = {
   },
   User: { id: (parent) => parent._id },
 };
+export default userResolvers
