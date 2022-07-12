@@ -1,0 +1,26 @@
+{
+  "name": "graphql-service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+    "start": "nodemon ./src/index.ts"
+  },
+  "author": "Loktysh",
+  "license": "MIT",
+  "dependencies": {
+    "apollo-datasource-rest": "^3.6.1",
+    "apollo-server": "^3.9.0",
+    "apollo-server-express": "^3.9.0",
+    "apollo-server-types": "^3.6.1",
+    "axios": "^0.27.2",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.0.1",
+    "eslint": "^8.17.0",
+    "graphql": "^16.5.0",
+    "nodemon": "^2.0.18",
+    "prettier": "^2.7.1",
+    "ts-node": "^10.8.1",
+    "typescript": "^4.7.3"
+  }
+}
